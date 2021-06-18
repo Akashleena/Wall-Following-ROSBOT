@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="motion_plan" type="follow_wall.py" name="read_laser" output="screen">
+        
+    </node>
+</launch>
