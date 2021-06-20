@@ -50,7 +50,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/akashleena/invento_ws/src/CMakeLists.txt"
   "/home/akashleena/invento_ws/src/motion_plan/CMakeLists.txt"
   "/home/akashleena/invento_ws/src/motion_plan/package.xml"
-  "/home/akashleena/invento_ws/src/motion_plan/scripts/follow_wall.py"
+  "/home/akashleena/invento_ws/src/motion_plan/scripts/following_the_wall.py"
   "/home/akashleena/invento_ws/src/turtlebot3/turtlebot3/CMakeLists.txt"
   "/home/akashleena/invento_ws/src/turtlebot3/turtlebot3/package.xml"
   "/home/akashleena/invento_ws/src/turtlebot3/turtlebot3_bringup/CMakeLists.txt"

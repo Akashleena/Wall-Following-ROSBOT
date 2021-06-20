@@ -53,6 +53,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/motion_plan" TYPE PROGRAM FILES "/home/akashleena/invento_ws/build/motion_plan/catkin_generated/installspace/follow_wall.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/motion_plan" TYPE PROGRAM FILES "/home/akashleena/invento_ws/build/motion_plan/catkin_generated/installspace/following_the_wall.py")
 endif()
 
