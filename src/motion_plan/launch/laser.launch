@@ -1,5 +1,5 @@
 <launch>
-   <node pkg="motion_plan" type="following_the_wall.py" name="wall_following_robot" output="screen"> 
+   <node pkg="motion_plan" type="turtlebot_wall_follow.py" name="wall_following_robot" output="screen"> 
      <!-- <node pkg="motion_plan" type="reading_laser.py" name="reading_laser" output="screen">   -->
     </node>
 </launch>
