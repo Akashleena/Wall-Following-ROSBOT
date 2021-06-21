@@ -88,7 +88,7 @@ def take_action():
         print(state_description)
         change_state(3)
         
-    elif regions['back'] < d and regions['left'] < d and regions['fright'] > d and regions['right'] > d and regions['fleft'] > d:
+    elif regions['back'] < d and regions['left'] < d and regions['fright'] > d and regions['right'] > d or regions['fleft'] < d:
         state_description = 'case 4 - Wall on left and back'
         print(state_description)
         change_state(5)
