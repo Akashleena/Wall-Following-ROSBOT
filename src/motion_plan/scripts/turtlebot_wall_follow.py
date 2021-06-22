@@ -6,7 +6,6 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from tf import transformations
-from std_srvs.srv import *
 
 import math
 
@@ -32,14 +31,6 @@ state_dict_ = {
     6: 'go back and turn right',
 }
 
-#def wall_follower_switch(req):
- #   global active_
-  #  active_ = req.data
-   # res = SetBoolResponse()
-    #res.success = True
-    #res.message = 'Done!'
-    #return res
-
 def clbk_laser(msg):
     global regions_
     print("Hello Ji! Myself inside Callback laser fcn!")
@@ -53,11 +44,6 @@ def clbk_laser(msg):
     
     take_action()
 
-def change_state(state):
-    global state_, state_dict_
-    if state is not state_:
-        print ('Wall follower - [%s] - %s' % (state, state_dict_[state]))
-        state_ = state
 
 def take_action():
     global regions_
@@ -73,51 +59,51 @@ def take_action():
     if regions['fright'] > d and regions['fleft'] > d and regions['right'] > d and regions['left'] > d and regions['back']> d:
         state_description = 'case 0 - Nothing detected, find a wall'
         print('case 0 - Nothing detected, find a wall')
-        change_state(0)
+        state_(0)
     if regions['fright'] < d and regions['fleft'] < d and regions['right'] > d and regions['left'] > d and regions['back']> d:
         state_description = 'case 1 - Wall only in front detected'
         print('case 1- Wall only in front detected')
-        change_state(3)
+        state_(3)
     elif regions['left'] < d and regions['fleft'] < d and regions['fright'] > d and regions['right'] > d and regions['back']>d:
         state_description = 'case 2 - wall on the left'
         print(state_description)
-        change_state(1)
+        state_(1)
         
     elif regions['fright'] < d and regions['fleft'] < d and regions['left'] < d and regions['right']> d and regions['back']> d:
         state_description = 'case 3 - wall on front and left'
         print(state_description)
-        change_state(3)
+        state_(3)
         
     elif regions['back'] < d and regions['left'] < d and regions['fright'] > d and regions['right'] > d or regions['fleft'] < d:
         state_description = 'case 4 - Wall on left and back'
         print(state_description)
-        change_state(5)
+        state_(5)
         
     #### the following condition did work well ####    
     elif regions['left'] < d and regions['back'] < d and regions['fright'] > d and regions['fleft']> d and regions['right'] > d:
         state_description = 'case 5 - wall only on left but we have reached the extreme end so we turn left'
         print(state_description)
-        change_state(2)
+        state_(2)
         
     elif regions['right'] < d and regions['left'] < d and regions['back'] < d:
         state_description = 'case 6 - go straight and steer a bit right because there is wall on 3 sides'
         print(state_description)
-        change_state(6)
+        state_(6)
         
     elif regions['fright'] < d and regions['right'] < d and regions['fleft'] > d and regions['left']> d and regions['back']> d:
         state_description = 'case 7 - walls on right and front'
         print('we turn right, this is case 7 walls on right and front')
-        change_state(3)
+        state_(3)
         
     elif regions['right'] < d and regions['fleft'] > d and regions['fright'] > d and regions['left'] > d and regions['back']> d:
         state_description = 'case 8 - walls only on right'
         print('case 8 - walls only on right : we turn right')
-        change_state(3)
+        state_(3)
         
     elif regions['right'] < d and regions['left'] < d  and regions['fright'] > d and regions['fleft'] >d and regions['back'] > d:
     	state_description= 'case 9- walls on right and left'
     	print('case 9- walls on right and left: so we go straight and turn left')
-    	change_state(5)
+    	state_(5)
     	
     
     #elif regions['fright'] < d and regions['fleft'] < d and regions['right'] < d and regions['left'] <d and regions['back'] > d:
@@ -187,18 +173,12 @@ def main():
     
     sub = rospy.Subscriber('/scan', LaserScan, clbk_laser)
     
-    #srv = rospy.Service('wall_follower_switch', SetBool, wall_follower_switch)
-    
     rate = rospy.Rate(2)
     print("Keep calm and debug Aleena")
     while not rospy.is_shutdown():
-        #if not active_:
-            #rate.sleep()
-            #continue
-        #print("jee twist() ko call karke message print karre ji")
         msg = Twist()
-        print("jee twist() ko call karke message print karre ji", msg)
-        #print("O jee! message print hua ki nahi?")
+        print("we are printing twist()")
+        
         if state_ == 0:
             msg = find_wall()
         elif state_ == 1:

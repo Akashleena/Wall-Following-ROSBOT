@@ -27,9 +27,9 @@ state_dict_ = {
     1: 'go straight',
     2: 'turn left',
     3: 'turn right',
-    4: 'steer right and go straight'
-    5: 'go straight and turn left'
-    6: 'go back and turn right'
+    4: 'steer right and go straight',
+    5: 'go straight and turn left',
+    6: 'go back and turn right',
 }
 
 #def wall_follower_switch(req):
@@ -68,7 +68,7 @@ def take_action():
     
     state_description = ''
     
-    d = 1.5
+    d = 0.5
     
     if regions['fright'] > d and regions['fleft'] > d and regions['right'] > d and regions['left'] > d and regions['back']> d:
         state_description = 'case 0 - Nothing detected, find a wall'
@@ -78,21 +78,22 @@ def take_action():
         state_description = 'case 1 - Wall only in front detected'
         print('case 1- Wall only in front detected')
         change_state(3)
-    elif regions['left'] < d and regions['fleft'] > d and regions['fright'] > d and regions['right'] > d and regions['back'] > d:
+    elif regions['left'] < d and regions['fleft'] < d and regions['fright'] > d and regions['right'] > d and regions['back']>d:
         state_description = 'case 2 - wall on the left'
         print(state_description)
         change_state(1)
         
     elif regions['fright'] < d and regions['fleft'] < d and regions['left'] < d and regions['right']> d and regions['back']> d:
         state_description = 'case 3 - wall on front and left'
-        print(state description)
+        print(state_description)
         change_state(3)
         
-    elif regions['back'] < d and regions['left'] < d and regions['fright'] > d and regions['right'] > d and regions['fleft'] > d:
+    elif regions['back'] < d and regions['left'] < d and regions['fright'] > d and regions['right'] > d or regions['fleft'] < d:
         state_description = 'case 4 - Wall on left and back'
-        print(state description)
-        change_state(1)
+        print(state_description)
+        change_state(5)
         
+    #### the following condition did work well ####    
     elif regions['left'] < d and regions['back'] < d and regions['fright'] > d and regions['fleft']> d and regions['right'] > d:
         state_description = 'case 5 - wall only on left but we have reached the extreme end so we turn left'
         print(state_description)
@@ -101,7 +102,7 @@ def take_action():
     elif regions['right'] < d and regions['left'] < d and regions['back'] < d:
         state_description = 'case 6 - go straight and steer a bit right because there is wall on 3 sides'
         print(state_description)
-        change_state(4)
+        change_state(6)
         
     elif regions['fright'] < d and regions['right'] < d and regions['fleft'] > d and regions['left']> d and regions['back']> d:
         state_description = 'case 7 - walls on right and front'
@@ -114,42 +115,44 @@ def take_action():
         change_state(3)
         
     elif regions['right'] < d and regions['left'] < d  and regions['fright'] > d and regions['fleft'] >d and regions['back'] > d:
-    	state_description= 'case 9- walls on right and left')
+    	state_description= 'case 9- walls on right and left'
     	print('case 9- walls on right and left: so we go straight and turn left')
     	change_state(5)
     	
-    elif regions['fright'] < d and regions['fleft'] < d and regions['right'] < d and regions['left'] <d and regions['back'] > d:
-    	state_description= 'case 10- Walls on front right and left'
-    	print('case 10- Walls on front right and left : so we go back and turn right')
-    	change_state(6)
+    
+    #elif regions['fright'] < d and regions['fleft'] < d and regions['right'] < d and regions['left'] <d and regions['back'] > d:
+    	#state_description= 'case 10- Walls on front right and left'
+    	#print('case 10- Walls on front right and left : so we go back and turn right')
+    	#change_state(6)
       
     else:
         state_description = 'unknown case'
+        print('Unknow case and we print the regions')
         rospy.loginfo(regions)
 
 def find_wall():
     print('Inside find_wall function')   
     msg = Twist()
     msg.linear.x = 0.2
-    msg.angular.z = -0.3
+    msg.angular.z = -0.2
     return msg
     
 def go_straight():
     print('Inside go straight function')
     msg = Twist()
-    msg.linear.x = 0.5
+    msg.linear.x = 0.2
     return msg
 
 def turn_left():
     print('Inside turn left function')
     msg = Twist()
-    msg.angular.z = 0.3
+    msg.angular.z = 0.2
     return msg
     
 def turn_right():
     print('Inside turn right function')
     msg = Twist()
-    msg.angular.z = -0.3
+    msg.angular.z = -0.2
     return msg
 
 def steer_right_go_straight():
@@ -192,10 +195,10 @@ def main():
         #if not active_:
             #rate.sleep()
             #continue
-        print("jee twist() ko call karke message print karre ji")
+        #print("jee twist() ko call karke message print karre ji")
         msg = Twist()
         print("jee twist() ko call karke message print karre ji", msg)
-        print("O jee! message print hua ki nahi?")
+        #print("O jee! message print hua ki nahi?")
         if state_ == 0:
             msg = find_wall()
         elif state_ == 1:
